@@ -1,0 +1,38 @@
+pipeline{
+    agent any
+tools{
+    maven 'Maven'
+   }
+ stages{
+      stage('Checkout'){
+            steps{
+                   git branch:'master' url:'https://github.com/Vasundara-L/mavenn.git'
+         }
+      }
+      stage('build'){
+            steps{
+               sh 'mvn clean package'
+                 }  
+              }
+      stage('test'){
+            steps{
+             sh 'mvn test'
+           }
+        }            
+      stage('run'){
+            steps{
+               sh'java-jar target/mavenn-1.0-SNAPSHOT.jar'
+             }
+          }
+      }
+          
+ post{
+     success{
+         echo 'build successful'
+       }
+     failure{
+          echo'build failure '
+      }
+   }
+   
+  }
